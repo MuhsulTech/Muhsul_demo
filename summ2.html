@@ -1,0 +1,191 @@
+<!-- Index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmallBiz Showcase</title>
+ <style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 1em;
+    text-align: center;
+}
+
+header nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+header nav ul li {
+    margin-right: 20px;
+}
+
+header nav a {
+    color: #fff;
+    text-decoration: none;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2em;
+}
+
+section {
+    background-color: #fff;
+    padding: 1em;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#business-gallery {
+    display: none;
+}
+
+#add-business-btn {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+#add-business-btn:hover {
+    background-color: #444;
+}
+
+#business-list img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+}     
+ </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#business-gallery" id="business-gallery-nav">Business Gallery</a></li>
+                <li><a href="#about-developers">About Developers</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="home">
+            <h1>Welcome to SmallBiz Showcase</h1>
+            <p>This platform is designed to help small businesses showcase their products and services.</p>
+            <button id="add-business-btn">Add Business</button>
+        </section>
+        <section id="add-business-form" style="display:none;">
+            <h2>Add Business</h2>
+            <form id="business-form">
+                <label for="business-name">Business Name:</label>
+                <input type="text" id="business-name" name="business-name"><br><br>
+                <label for="business-logo">Business Logo URL:</label>
+<input type="url" id="business-logo" name="business-logo"><br><br>
+                <label for="business-description">Business Description:</label>
+                <textarea id="business-description" name="business-description"></textarea><br><br>
+                <label for="business-phone">Business Phone:</label>
+                <input type="tel" id="business-phone" name="business-phone"><br><br>
+                <label for="social-media-1">Social Media 1:</label>
+                <input type="url" id="social-media-1" name="social-media-1"><br><br>
+                <label for="social-media-2">Social Media 2:</label>
+                <input type="url" id="social-media-2" name="social-media-2"><br><br>
+                <label for="social-media-3">Social Media 3:</label>
+                <input type="url" id="social-media-3" name="social-media-3"><br><br>
+                <button id="submit-business-btn">Submit</button>
+            </form>
+        </section>
+        <section id="business-gallery">
+            <h2>Business Gallery</h2>
+            <ul id="business-list"></ul>
+        </section>
+        <section id="about-developers">
+            <h2>About Developers</h2>
+            <p>Information about the developers will go here.</p>
+        </section>
+    </main>
+
+    <script>
+ // Get elements
+const addBusinessBtn = document.getElementById('add-business-btn');
+const businessForm = document.getElementById('business-form');
+const businessList = document.getElementById('business-list');
+
+// Business data storage
+const businesses = [];
+
+// Add event listener to add business button
+addBusinessBtn.addEventListener('click', () => {
+  document.getElementById('add-business-form').style.display = 'block';
+});
+
+  // Add event listener to submit business button
+businessForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const businessName = document.getElementById('business-name').value;
+  const businessLogo = document.getElementById('business-logo').value; // Get image URL
+  const businessDescription = document.getElementById('business-description').value;
+  const businessPhone = document.getElementById('business-phone').value;
+  const socialMedia1 = document.getElementById('social-media-1').value;
+  const socialMedia2 = document.getElementById('social-media-2').value;
+  const socialMedia3 = document.getElementById('social-media-3').value;
+
+  // Create business object
+  const business = {
+    name: businessName,
+    logo: businessLogo, // Use image URL
+    description: businessDescription,
+    phone: businessPhone,
+    socialMedia: [socialMedia1, socialMedia2, socialMedia3]
+  };
+
+  // Add business to storage
+  businesses.push(business);
+
+  // Render business list
+  renderBusinessList();
+
+  // Clear form fields
+  businessForm.reset();
+});
+
+// Render business list
+function renderBusinessList() {
+  businessList.innerHTML = '';
+  businesses.forEach((business, index) => {
+    const businessHTML = `
+      <li>
+        <h2>${business.name}</h2>
+        <img src="${business.logo}" alt="${business.name} logo">
+        <p>${business.description}</p>
+        <p>Phone: ${business.phone}</p>
+        <ul>
+          ${business.socialMedia.map((handle, index) => `
+            <li><a href="${handle}" target="_blank">Social Media ${index + 1}</a></li>
+          `).join('')}
+        </ul>
+      </li>
+    `;
+    businessList.insertAdjacentHTML('beforeend', businessHTML);
+  });
+}    
+    </script>
+</body>
+</html>
